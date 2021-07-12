@@ -72,12 +72,12 @@ export default {
       }
 
       beforeSave.then(function() {
+        // Remove reactivity so objects are properly converted
+        // into data that can be transmitted
         const data = JSON.parse(JSON.stringify(vm.fields));
 
         Fliplet.Studio.emit('page-preview-send-event', {
           type: 'helper-configuration-updated',
-          // remove reactivity so objects are properly converted
-          // into data that can be transmitted
           data: data
         });
 

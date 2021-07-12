@@ -515,11 +515,11 @@ Vue.component('Field', _components_Field__WEBPACK_IMPORTED_MODULE_2__["default"]
                 }
 
                 beforeSave.then(function () {
+                  // Remove reactivity so objects are properly converted
+                  // into data that can be transmitted
                   var data = JSON.parse(JSON.stringify(vm.fields));
                   Fliplet.Studio.emit('page-preview-send-event', {
                     type: 'helper-configuration-updated',
-                    // remove reactivity so objects are properly converted
-                    // into data that can be transmitted
                     data: data
                   });
 
@@ -1440,301 +1440,273 @@ var render = function() {
           name: "show",
           rawName: "v-show",
           value: typeof _vm.show === "undefined" || _vm.show,
-          expression: "typeof show === 'undefined' || show"
+          expression: "(typeof show === 'undefined' || show)"
         }
       ],
       staticClass: "form-group clearfix",
-      attrs: { "data-field": _vm.name }
+      attrs: { "data-field": _vm.name, "data-type": _vm.type }
     },
     [
-      _c("div", { staticClass: "col-sm-4 control-label" }, [
-        _vm.label ? _c("label", [_vm._v(_vm._s(_vm.label))]) : _vm._e(),
-        _vm._v(" "),
-        _vm.description
-          ? _c("p", {
-              staticClass: "help-block",
-              domProps: { innerHTML: _vm._s(_vm.description) }
-            })
-          : _vm._e()
-      ]),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-sm-8" },
-        [
-          _vm.type === "list" && _vm.panelIsVisible
-            ? _c("div", { staticClass: "list-field" }, [
-                _c("div", { staticClass: "panel-group ui-sortable" }, [
-                  _c(
-                    "div",
-                    {
+      _vm.type === "hidden"
+        ? _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.value,
+                expression: "value"
+              }
+            ],
+            attrs: { type: "hidden" },
+            domProps: { value: _vm.value },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.value = $event.target.value
+              }
+            }
+          })
+        : [
+            _c("div", { staticClass: "col-sm-4 control-label" }, [
+              _vm.label ? _c("label", [_vm._v(_vm._s(_vm.label))]) : _vm._e(),
+              _vm._v(" "),
+              _vm.description
+                ? _c("p", {
+                    staticClass: "help-block",
+                    domProps: { innerHTML: _vm._s(_vm.description) }
+                  })
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-sm-8" },
+              [
+                _vm.type === "list" && _vm.panelIsVisible
+                  ? _c("div", { staticClass: "list-field" }, [
+                      _c("div", { staticClass: "panel-group ui-sortable" }, [
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "sortable",
+                                rawName: "v-sortable",
+                                value: {
+                                  group: { name: "fields", pull: false },
+                                  scrollSensitivity: 116,
+                                  scrollSpeed: 10,
+                                  onStart: _vm.onStart,
+                                  onEnd: _vm.onEnd,
+                                  onUpdate: _vm.onSort,
+                                  handle: ".screen-reorder-handle"
+                                },
+                                expression:
+                                  "{ group: { name: 'fields', pull: false }, scrollSensitivity: 116, scrollSpeed: 10, onStart: onStart, onEnd: onEnd, onUpdate: onSort, handle: '.screen-reorder-handle' }"
+                              }
+                            ]
+                          },
+                          _vm._l(_vm.value, function(fieldList, index) {
+                            return _c(
+                              "div",
+                              {
+                                key: index,
+                                staticClass: "panel panel-default"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "panel-heading ui-sortable-handle"
+                                  },
+                                  [
+                                    _c(
+                                      "h4",
+                                      {
+                                        staticClass: "panel-title",
+                                        attrs: { "data-toggle": "collapse" }
+                                      },
+                                      [
+                                        _vm._m(0, true),
+                                        _vm._v(" "),
+                                        _c("span", {
+                                          staticClass:
+                                            "fa fa-chevron-right chevron",
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.onToggleAccordion(
+                                                $event
+                                              )
+                                            }
+                                          }
+                                        }),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "panel-title-text",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.onToggleAccordion(
+                                                  $event
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm._f("panelHeading")(
+                                                  fieldList,
+                                                  _vm.headingFieldName
+                                                )
+                                              )
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: { href: "#" },
+                                        on: {
+                                          click: function($event) {
+                                            $event.preventDefault()
+                                            return _vm.onDeleteItem(index)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("span", {
+                                          staticClass: "icon-delete fa fa-trash"
+                                        })
+                                      ]
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "panel-collapse collapse" },
+                                  [
+                                    _c("div", { staticClass: "panel-body" }, [
+                                      _c("div", { staticClass: "form" }, [
+                                        _c(
+                                          "div",
+                                          [
+                                            _vm._l(fieldList, function(field) {
+                                              return [
+                                                _c(
+                                                  "field",
+                                                  _vm._b(
+                                                    {
+                                                      key: field.name,
+                                                      ref: "fieldInstances",
+                                                      refInFor: true,
+                                                      attrs: { index: index }
+                                                    },
+                                                    "field",
+                                                    field,
+                                                    false
+                                                  )
+                                                )
+                                              ]
+                                            })
+                                          ],
+                                          2
+                                        )
+                                      ])
+                                    ])
+                                  ]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      !this.value || !this.value.length
+                        ? _c("div", {
+                            domProps: {
+                              innerHTML: _vm._s(_vm.emptyListPlaceholderHtml)
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "btn btn-default",
+                            attrs: { href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addItem($event)
+                              }
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.addLabel || "Add"))]
+                        ),
+                        _vm._v(" "),
+                        this.value && this.value.length
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-link expand-items",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.onToggleAccordions($event)
+                                  }
+                                }
+                              },
+                              [_vm._v("Expand/Collapse All")]
+                            )
+                          : _vm._e()
+                      ])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.type === "text"
+                  ? _c("input", {
                       directives: [
                         {
-                          name: "sortable",
-                          rawName: "v-sortable",
-                          value: {
-                            group: { name: "fields", pull: false },
-                            scrollSensitivity: 116,
-                            scrollSpeed: 10,
-                            onStart: _vm.onStart,
-                            onEnd: _vm.onEnd,
-                            onUpdate: _vm.onSort,
-                            handle: ".screen-reorder-handle"
-                          },
-                          expression:
-                            "{ group: { name: 'fields', pull: false }, scrollSensitivity: 116, scrollSpeed: 10, onStart: onStart, onEnd: onEnd, onUpdate: onSort, handle: '.screen-reorder-handle' }"
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.value,
+                          expression: "value"
                         }
-                      ]
-                    },
-                    _vm._l(_vm.value, function(fieldList, index) {
-                      return _c(
-                        "div",
-                        { key: index, staticClass: "panel panel-default" },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "panel-heading ui-sortable-handle" },
-                            [
-                              _c(
-                                "h4",
-                                {
-                                  staticClass: "panel-title",
-                                  attrs: { "data-toggle": "collapse" }
-                                },
-                                [
-                                  _vm._m(0, true),
-                                  _vm._v(" "),
-                                  _c("span", {
-                                    staticClass: "fa fa-chevron-right chevron",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.onToggleAccordion($event)
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass: "panel-title-text",
-                                      on: {
-                                        click: function($event) {
-                                          $event.preventDefault()
-                                          return _vm.onToggleAccordion($event)
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("panelHeading")(
-                                            fieldList,
-                                            _vm.headingFieldName
-                                          )
-                                        )
-                                      )
-                                    ]
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.onDeleteItem(index)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("span", {
-                                    staticClass: "icon-delete fa fa-trash"
-                                  })
-                                ]
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "panel-collapse collapse" },
-                            [
-                              _c("div", { staticClass: "panel-body" }, [
-                                _c("div", { staticClass: "form" }, [
-                                  _c(
-                                    "div",
-                                    [
-                                      _vm._l(fieldList, function(field) {
-                                        return [
-                                          _c(
-                                            "field",
-                                            _vm._b(
-                                              {
-                                                key: field.name,
-                                                ref: "fieldInstances",
-                                                refInFor: true,
-                                                attrs: { index: index }
-                                              },
-                                              "field",
-                                              field,
-                                              false
-                                            )
-                                          )
-                                        ]
-                                      })
-                                    ],
-                                    2
-                                  )
-                                ])
-                              ])
-                            ]
-                          )
-                        ]
-                      )
-                    }),
-                    0
-                  )
-                ]),
-                _vm._v(" "),
-                !this.value || !this.value.length
-                  ? _c("div", {
-                      domProps: {
-                        innerHTML: _vm._s(_vm.emptyListPlaceholderHtml)
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: _vm.placeholder,
+                        required: _vm.requireValidation
+                      },
+                      domProps: { value: _vm.value },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.value = $event.target.value
+                        }
                       }
                     })
                   : _vm._e(),
                 _vm._v(" "),
-                _c("p", [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-default",
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.addItem($event)
-                        }
-                      }
-                    },
-                    [_vm._v(_vm._s(_vm.addLabel || "Add"))]
-                  ),
-                  _vm._v(" "),
-                  this.value && this.value.length
-                    ? _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-link expand-items",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.onToggleAccordions($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Expand/Collapse All")]
-                      )
-                    : _vm._e()
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.type === "text"
-            ? _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.value,
-                    expression: "value"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: _vm.placeholder,
-                  required: _vm.requireValidation
-                },
-                domProps: { value: _vm.value },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.value = $event.target.value
-                  }
-                }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.type === "email"
-            ? _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.value,
-                    expression: "value"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "email",
-                  placeholder: _vm.placeholder,
-                  required: _vm.requireValidation
-                },
-                domProps: { value: _vm.value },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.value = $event.target.value
-                  }
-                }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.type === "textarea"
-            ? _c("textarea", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.value,
-                    expression: "value"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  placeholder: _vm.placeholder,
-                  required: _vm.requireValidation,
-                  rows: _vm.rows || 4
-                },
-                domProps: { value: _vm.value },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.value = $event.target.value
-                  }
-                }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.options && _vm.type === "radio"
-            ? _vm._l(_vm.options, function(option) {
-                return _c(
-                  "div",
-                  { key: option.value, staticClass: "radio radio-icon" },
-                  [
-                    _c("input", {
+                _vm.type === "email"
+                  ? _c("input", {
                       directives: [
                         {
                           name: "model",
@@ -1743,47 +1715,26 @@ var render = function() {
                           expression: "value"
                         }
                       ],
+                      staticClass: "form-control",
                       attrs: {
-                        name: _vm.name,
-                        id: _vm.name + "_" + option.value,
-                        type: "radio",
+                        type: "email",
+                        placeholder: _vm.placeholder,
                         required: _vm.requireValidation
                       },
-                      domProps: {
-                        value: option.value,
-                        checked: _vm._q(_vm.value, option.value)
-                      },
+                      domProps: { value: _vm.value },
                       on: {
-                        change: function($event) {
-                          _vm.value = option.value
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.value = $event.target.value
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      { attrs: { for: _vm.name + "_" + option.value } },
-                      [
-                        _vm._m(1, true),
-                        _vm._v(
-                          " " +
-                            _vm._s(option.label || option.value) +
-                            "\n        "
-                        )
-                      ]
-                    )
-                  ]
-                )
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.options && _vm.type === "checkbox"
-            ? _vm._l(_vm.options, function(option) {
-                return _c(
-                  "div",
-                  { key: option.value, staticClass: "checkbox checkbox-icon" },
-                  [
-                    _c("input", {
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.type === "textarea"
+                  ? _c("textarea", {
                       directives: [
                         {
                           name: "model",
@@ -1792,151 +1743,242 @@ var render = function() {
                           expression: "value"
                         }
                       ],
+                      staticClass: "form-control",
                       attrs: {
-                        name: _vm.name,
-                        id: _vm.name + "_" + option.value,
-                        type: "checkbox"
+                        placeholder: _vm.placeholder,
+                        required: _vm.requireValidation,
+                        rows: _vm.rows || 4
                       },
-                      domProps: {
-                        value: option.value,
-                        checked: Array.isArray(_vm.value)
-                          ? _vm._i(_vm.value, option.value) > -1
-                          : _vm.value
-                      },
+                      domProps: { value: _vm.value },
                       on: {
-                        change: function($event) {
-                          var $$a = _vm.value,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = option.value,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 && (_vm.value = $$a.concat([$$v]))
-                            } else {
-                              $$i > -1 &&
-                                (_vm.value = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
-                            }
-                          } else {
-                            _vm.value = $$c
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
                           }
+                          _vm.value = $event.target.value
                         }
                       }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      { attrs: { for: _vm.name + "_" + option.value } },
-                      [
-                        _vm._m(2, true),
-                        _vm._v(
-                          " " +
-                            _vm._s(option.label || option.value) +
-                            "\n        "
-                        )
-                      ]
-                    )
-                  ]
-                )
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.type === "toggle"
-            ? [
-                _c("div", { staticClass: "checkbox checkbox-icon" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.value,
-                        expression: "value"
-                      }
-                    ],
-                    attrs: {
-                      name: _vm.name,
-                      id: _vm.name,
-                      type: "checkbox",
-                      value: "true",
-                      required: _vm.requireValidation
-                    },
-                    domProps: {
-                      checked: Array.isArray(_vm.value)
-                        ? _vm._i(_vm.value, "true") > -1
-                        : _vm.value
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.value,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = "true",
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 && (_vm.value = $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              (_vm.value = $$a
-                                .slice(0, $$i)
-                                .concat($$a.slice($$i + 1)))
-                          }
-                        } else {
-                          _vm.value = $$c
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("label", { attrs: { for: _vm.name } }, [
-                    _vm._m(3),
-                    _vm._v(" " + _vm._s(_vm.toggleLabel) + "\n        ")
-                  ])
-                ])
-              ]
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.isFullScreenProvider
-            ? [
-                _vm.html
-                  ? _c("div", { domProps: { innerHTML: _vm._s(_vm.html) } })
-                  : _vm._e()
-              ]
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.type === "provider"
-            ? _c(
-                "div",
-                { staticClass: "provider" },
-                [
-                  _vm.isFullScreenProvider
-                    ? [
-                        _c("div", {
-                          domProps: { innerHTML: _vm._s(_vm.providerHtml) }
-                        })
-                      ]
-                    : _vm._e()
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.warning
-            ? [
-                _c("br"),
+                    })
+                  : _vm._e(),
                 _vm._v(" "),
-                _c("p", {
-                  staticClass: "alert alert-warning",
-                  domProps: { innerHTML: _vm._s(_vm.warning) }
-                })
-              ]
-            : _vm._e()
-        ],
-        2
-      )
-    ]
+                _vm.options && _vm.type === "radio"
+                  ? _vm._l(_vm.options, function(option) {
+                      return _c(
+                        "div",
+                        { key: option.value, staticClass: "radio radio-icon" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.value,
+                                expression: "value"
+                              }
+                            ],
+                            attrs: {
+                              name: _vm.name,
+                              id: _vm.name + "_" + option.value,
+                              type: "radio",
+                              required: _vm.requireValidation
+                            },
+                            domProps: {
+                              value: option.value,
+                              checked: _vm._q(_vm.value, option.value)
+                            },
+                            on: {
+                              change: function($event) {
+                                _vm.value = option.value
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            { attrs: { for: _vm.name + "_" + option.value } },
+                            [
+                              _vm._m(1, true),
+                              _vm._v(
+                                " " +
+                                  _vm._s(option.label || option.value) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.options && _vm.type === "checkbox"
+                  ? _vm._l(_vm.options, function(option) {
+                      return _c(
+                        "div",
+                        {
+                          key: option.value,
+                          staticClass: "checkbox checkbox-icon"
+                        },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.value,
+                                expression: "value"
+                              }
+                            ],
+                            attrs: {
+                              name: _vm.name,
+                              id: _vm.name + "_" + option.value,
+                              type: "checkbox"
+                            },
+                            domProps: {
+                              value: option.value,
+                              checked: Array.isArray(_vm.value)
+                                ? _vm._i(_vm.value, option.value) > -1
+                                : _vm.value
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.value,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = option.value,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 && (_vm.value = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.value = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.value = $$c
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            { attrs: { for: _vm.name + "_" + option.value } },
+                            [
+                              _vm._m(2, true),
+                              _vm._v(
+                                " " +
+                                  _vm._s(option.label || option.value) +
+                                  "\n          "
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.type === "toggle"
+                  ? [
+                      _c("div", { staticClass: "checkbox checkbox-icon" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.value,
+                              expression: "value"
+                            }
+                          ],
+                          attrs: {
+                            name: _vm.name,
+                            id: _vm.name,
+                            type: "checkbox",
+                            value: "true",
+                            required: _vm.requireValidation
+                          },
+                          domProps: {
+                            checked: Array.isArray(_vm.value)
+                              ? _vm._i(_vm.value, "true") > -1
+                              : _vm.value
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.value,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = "true",
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 && (_vm.value = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.value = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.value = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("label", { attrs: { for: _vm.name } }, [
+                          _vm._m(3),
+                          _vm._v(" " + _vm._s(_vm.toggleLabel) + "\n          ")
+                        ])
+                      ])
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.isFullScreenProvider
+                  ? [
+                      _vm.html
+                        ? _c("div", {
+                            domProps: { innerHTML: _vm._s(_vm.html) }
+                          })
+                        : _vm._e()
+                    ]
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.type === "provider"
+                  ? _c(
+                      "div",
+                      { staticClass: "provider" },
+                      [
+                        _vm.isFullScreenProvider
+                          ? [
+                              _c("div", {
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.providerHtml)
+                                }
+                              })
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.warning
+                  ? [
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("p", {
+                        staticClass: "alert alert-warning",
+                        domProps: { innerHTML: _vm._s(_vm.warning) }
+                      })
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
+          ]
+    ],
+    2
   )
 }
 var staticRenderFns = [
@@ -2003,6 +2045,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+//
+//
+//
 //
 //
 //

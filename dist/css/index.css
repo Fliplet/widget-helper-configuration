@@ -22,10 +22,11 @@
   align-items: center;
   justify-content: center; }
 
-.form-group {
-  padding-bottom: 15px; }
-  .form-group:last-child {
-    border-bottom: 0; }
+.form-group:last-child {
+  border-bottom: 0; }
+
+.form-group[data-type="provider"] {
+  margin-bottom: 0; }
 
 .panel-group {
   -webkit-user-select: none; }
@@ -82,7 +83,8 @@
   border-right: 1px solid #999;
   opacity: 0.7;
   line-height: 18px; }
-  .panel-heading .screen-reorder-handle:hover, .panel-heading .screen-reorder-handle:active, .panel-heading .screen-reorder-handle .fa {
+  .panel-heading .screen-reorder-handle:hover, .panel-heading .screen-reorder-handle:active,
+  .panel-heading .screen-reorder-handle .fa {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
 
